@@ -1,5 +1,7 @@
 package ray1.camera;
 
+import egl.math.Matrix4;
+import egl.math.Vector3;
 import ray1.Ray;
 import egl.math.Vector3d;
 
@@ -24,7 +26,16 @@ public class PerspectiveCamera extends Camera {
     //TODO#Ray Task 1: create necessary new variables/objects here, including an orthonormal basis
     //          formed by three basis vectors and any other helper variables 
     //          if needed.
-    
+
+    // Useful explanation of different spaces https://learnopengl.com/Getting-started/Coordinate-Systems
+
+    // Perspective projection matrix, maps from 3D world space to the on-screen 2D image space
+    // For an explanation on the derivation of this matrix, look here.
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix
+
+    Vector3 camX;
+    Vector3 camY;
+    Vector3 camZ;
 
     /**
      * Initialize the derived view variables to prepare for using the camera.
@@ -34,8 +45,9 @@ public class PerspectiveCamera extends Camera {
         // 1) Set the 3 basis vectors in the orthonormal basis,
         // based on viewDir and viewUp
         // 2) Set up the helper variables if needed
-        
-
+        camY = viewUp.clone().normalize();
+        camZ = viewDir.clone().normalize();
+        camX = viewDir.clone().cross(viewUp.clone()).normalize();
     }
 
     /**
@@ -50,11 +62,16 @@ public class PerspectiveCamera extends Camera {
         // 1) Transform inU so that it lies between [-viewWidth / 2, +viewWidth / 2] 
         //    instead of [0, 1]. Similarly, transform inV so that its range is
         //    [-vieHeight / 2, +viewHeight / 2]
+        inU = inU * viewWidth - viewWidth / 2f;
+        inV = inV * viewHeight - viewHeight /2f;
         // 2) Set the origin field of outRay for a perspective camera.
+        Vector3 camOrigin = viewPoint.clone();
         // 3) Set the direction field of outRay for an perspective camera. This
         //    should depend on your transformed inU and inV and your basis vectors,
         //    as well as the projection distance.
-
-              
+        Vector3 viewPlaneOrigin = camOrigin.clone().add(camZ.clone().mul(projDistance));
+        Vector3 viewPlanePoint = viewPlaneOrigin.clone().add(camX.clone().mul(inU)).add(camY.clone().mul(inV));
+        Vector3 camToViewPlanePoint = viewPlanePoint.clone().sub(camOrigin.clone());
+        outRay.set(new Vector3d(viewPlaneOrigin.clone()), new Vector3d(camToViewPlanePoint.clone().normalize()));
     }
 }

@@ -1,5 +1,8 @@
 package ray1.camera;
 
+import egl.math.Matrix4;
+import egl.math.Matrix4d;
+import egl.math.Vector3;
 import ray1.Ray;
 import egl.math.Vector3d;
 
@@ -8,8 +11,6 @@ public class OrthographicCamera extends Camera {
     //TODO#Ray Task 1: create necessary new variables/objects here, including an orthonormal basis
     //          formed by three basis vectors and any other helper variables 
     //          if needed.
-	
-    
     
     /**
      * Initialize the derived view variables to prepare for using the camera.
@@ -18,6 +19,7 @@ public class OrthographicCamera extends Camera {
         // TODO#Ray Task 1:  Fill in this function.
         // 1) Set the 3 basis vectors in the orthonormal basis, 
         //    based on viewDir and viewUp
+
         // 2) Set up the helper variables if needed
 
 
