@@ -4,6 +4,8 @@ import ray1.Ray;
 import egl.math.Vector3;
 import egl.math.Vector3d;
 
+import java.util.ArrayList;
+
 /**
  * Represents a camera object. This class is responsible for generating rays that are intersected
  * with the scene.
@@ -87,6 +89,21 @@ public abstract class Camera {
 		dir2.normalize();
 		dir1.sub(dir2);
 		return ray1.origin.dist(ray2.origin) < 1e-6 && dir1.len() < 1e-6; 
+	}
+
+	protected ArrayList<Vector3d> grammSchmidt(Vector3d in1, Vector3d in2, Vector3d in3) {
+		Vector3d out1 = in1.clone().normalize();
+		Vector3d out2 = in2.clone().sub(out1.clone().mul(in2.dot(out1) / out1.lenSq())).normalize();
+		Vector3d out3 = in3.clone().
+				sub( out1.clone().mul( in3.dot(out1) / out1.lenSq() ) ).
+				sub( out2.clone().mul( in3.dot(out2) / out2.lenSq() ) ).normalize();
+
+		ArrayList<Vector3d> orthogonalBasis = new ArrayList<>();
+		orthogonalBasis.add(out1);
+		orthogonalBasis.add(out2);
+		orthogonalBasis.add(out3);
+
+		return orthogonalBasis;
 	}
 
 	public static void main(String args[]) {

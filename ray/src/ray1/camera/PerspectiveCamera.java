@@ -5,6 +5,8 @@ import egl.math.Vector3;
 import ray1.Ray;
 import egl.math.Vector3d;
 
+import java.util.ArrayList;
+
 /**
  * Represents a camera with perspective view. For this camera, the view window
  * corresponds to a rectangle on a plane perpendicular to viewDir but at
@@ -33,9 +35,9 @@ public class PerspectiveCamera extends Camera {
     // For an explanation on the derivation of this matrix, look here.
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix
 
-    Vector3d camX;
-    Vector3d camY;
-    Vector3d camZ;
+    Vector3d viewX;
+    Vector3d viewY;
+    Vector3d viewZ;
 
     /**
      * Initialize the derived view variables to prepare for using the camera.
@@ -45,10 +47,14 @@ public class PerspectiveCamera extends Camera {
         // 1) Set the 3 basis vectors in the orthonormal basis,
         // based on viewDir and viewUp
         // 2) Set up the helper variables if needed
-        camZ = new Vector3d(viewDir.clone());
-        camY = new Vector3d(viewUp.clone());
-        Vector3d u2 = new Vector3d(viewUp.clone()).sub(camZ.clone().mul(new Vector3d(viewUp.clone()).dot(camZ)));
-        camX = new Vector3d(camZ.clone().cross(u2.clone()));
+        Vector3d camZ = new Vector3d(viewDir.clone());
+        Vector3d camY = new Vector3d(viewUp.clone());
+        Vector3d camX = new Vector3d(camZ.clone().cross(camY.clone()));
+
+        ArrayList<Vector3d> orthographicBasis = grammSchmidt(camZ, camY, camX);
+        viewZ = orthographicBasis.get(0);
+        viewY = orthographicBasis.get(1);
+        viewX = orthographicBasis.get(2);
     }
 
     /**
@@ -67,11 +73,12 @@ public class PerspectiveCamera extends Camera {
         inV = inV * viewHeight - viewHeight /2f;
         // 2) Set the origin field of outRay for a perspective camera.
         Vector3d camOrigin = new Vector3d(viewPoint.clone());
+        Vector3d camView = new Vector3d(viewDir);
         // 3) Set the direction field of outRay for an perspective camera. This
         //    should depend on your transformed inU and inV and your basis vectors,
         //    as well as the projection distance.
-        Vector3d viewPlaneOrigin = camOrigin.clone().add(camZ.clone().clone().mul(projDistance));
-        Vector3d viewPlanePoint = viewPlaneOrigin.clone().add(camX.clone().mul(inU)).clone().add(camY.clone().mul(inV));
+        Vector3d viewPlaneOrigin = camOrigin.clone().add(camView.clone().mul(projDistance));
+        Vector3d viewPlanePoint = viewPlaneOrigin.clone().add(viewX.clone().mul(inU)).clone().add(viewY.clone().mul(inV));
         Vector3d camToViewPlanePoint = viewPlanePoint.clone().sub(camOrigin.clone());
         outRay.set(new Vector3d(viewPoint.clone()), new Vector3d(camToViewPlanePoint.clone().normalize()));
     }

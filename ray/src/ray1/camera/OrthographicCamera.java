@@ -37,21 +37,6 @@ public class OrthographicCamera extends Camera {
         // 2) Set up the helper variables if needed
     }
 
-    private ArrayList<Vector3d> grammSchmidt(Vector3d in1, Vector3d in2, Vector3d in3) {
-        Vector3d out1 = in1.clone().normalize();
-        Vector3d out2 = in2.clone().sub(out1.clone().mul(in2.dot(out1) / out1.lenSq())).normalize();
-        Vector3d out3 = in3.clone().
-                sub( out1.clone().mul( in3.dot(out1) / out1.lenSq() ) ).
-                sub( out2.clone().mul( in3.dot(out2) / out2.lenSq() ) ).normalize();
-
-        ArrayList<Vector3d> orthogonalBasis = new ArrayList<>();
-        orthogonalBasis.add(out1);
-        orthogonalBasis.add(out2);
-        orthogonalBasis.add(out3);
-
-        return orthogonalBasis;
-    }
-
     /**
      * Set outRay to be a ray from the camera through a point in the image.
      *
