@@ -33,9 +33,9 @@ public class PerspectiveCamera extends Camera {
     // For an explanation on the derivation of this matrix, look here.
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix
 
-    Vector3 camX;
-    Vector3 camY;
-    Vector3 camZ;
+    Vector3d camX;
+    Vector3d camY;
+    Vector3d camZ;
 
     /**
      * Initialize the derived view variables to prepare for using the camera.
@@ -45,9 +45,10 @@ public class PerspectiveCamera extends Camera {
         // 1) Set the 3 basis vectors in the orthonormal basis,
         // based on viewDir and viewUp
         // 2) Set up the helper variables if needed
-        camY = viewUp.clone().normalize();
-        camZ = viewDir.clone().normalize();
-        camX = viewDir.clone().cross(viewUp.clone()).normalize();
+        camZ = new Vector3d(viewDir.clone());
+        camY = new Vector3d(viewUp.clone());
+        Vector3d u2 = new Vector3d(viewUp.clone()).sub(camZ.clone().mul(new Vector3d(viewUp.clone()).dot(camZ)));
+        camX = new Vector3d(camZ.clone().cross(u2.clone()));
     }
 
     /**
@@ -65,13 +66,13 @@ public class PerspectiveCamera extends Camera {
         inU = inU * viewWidth - viewWidth / 2f;
         inV = inV * viewHeight - viewHeight /2f;
         // 2) Set the origin field of outRay for a perspective camera.
-        Vector3 camOrigin = viewPoint.clone();
+        Vector3d camOrigin = new Vector3d(viewPoint.clone());
         // 3) Set the direction field of outRay for an perspective camera. This
         //    should depend on your transformed inU and inV and your basis vectors,
         //    as well as the projection distance.
-        Vector3 viewPlaneOrigin = camOrigin.clone().add(camZ.clone().mul(projDistance));
-        Vector3 viewPlanePoint = viewPlaneOrigin.clone().add(camX.clone().mul(inU)).add(camY.clone().mul(inV));
-        Vector3 camToViewPlanePoint = viewPlanePoint.clone().sub(camOrigin.clone());
-        outRay.set(new Vector3d(viewPlaneOrigin.clone()), new Vector3d(camToViewPlanePoint.clone().normalize()));
+        Vector3d viewPlaneOrigin = camOrigin.clone().add(camZ.clone().clone().mul(projDistance));
+        Vector3d viewPlanePoint = viewPlaneOrigin.clone().add(camX.clone().mul(inU)).clone().add(camY.clone().mul(inV));
+        Vector3d camToViewPlanePoint = viewPlanePoint.clone().sub(camOrigin.clone());
+        outRay.set(new Vector3d(viewPoint.clone()), new Vector3d(camToViewPlanePoint.clone().normalize()));
     }
 }
