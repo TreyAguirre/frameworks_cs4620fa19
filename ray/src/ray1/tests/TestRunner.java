@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;;
 public class TestRunner {
     public static void main(String args[]) {
         Result result = JUnitCore.runClasses(TestSuite.class);
-        if(result.getFailureCount() > 0){
+        if(result.getFailureCount() > 0) {
             System.out.println("Failures in the following tests:");
             System.out.println("============================================");
         }

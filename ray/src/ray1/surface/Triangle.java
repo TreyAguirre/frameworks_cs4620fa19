@@ -123,16 +123,20 @@ public class Triangle extends Surface {
     }
 
     // weighted average of vertex uvs
-    Vector2d texCoord0 = new Vector2d(owner.getMesh().getUV(face, face.uvs[0]).clone()).mul(alpha);
-    Vector2d texCoord1 = new Vector2d(owner.getMesh().getUV(face, face.uvs[1]).clone()).mul(beta);
-    Vector2d texCoord2 = new Vector2d(owner.getMesh().getUV(face, face.uvs[2]).clone()).mul(gamma);
-    Vector2d texCoord = texCoord0.clone().add(texCoord1).add(texCoord2).normalize();
+    if (face.hasUVs()) {
+    	Vector2d texCoord0 = new Vector2d(owner.getMesh().getUV(face, face.uvs[0]).clone()).mul(alpha);
+        Vector2d texCoord1 = new Vector2d(owner.getMesh().getUV(face, face.uvs[1]).clone()).mul(beta);
+        Vector2d texCoord2 = new Vector2d(owner.getMesh().getUV(face, face.uvs[2]).clone()).mul(gamma);
+        Vector2d texCoord = texCoord0.clone().add(texCoord1).add(texCoord2).normalize();
+        
+        outRecord.texCoords.set(texCoord);
+    }
+    
 
     outRecord.location.set(location);
     outRecord.normal.set(normal);
     outRecord.surface = this;
     outRecord.t = t;
-    outRecord.texCoords.set(texCoord);
 
 	return true;
   }

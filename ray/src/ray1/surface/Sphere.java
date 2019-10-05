@@ -57,25 +57,30 @@ public class Sphere extends Surface {
         double determinantSqrt = Math.sqrt(determinant);
         double tPos = (negativeB + determinantSqrt) / dirDotDir;
         double tNeg = (negativeB - determinantSqrt) / dirDotDir;
-
-        double t = (determinant != 0) ?  tNeg : negativeB / dirDotDir;
-
-        if (t < rayIn.start || t > rayIn.end) return false;
+        
+        double t = tNeg;
+        if (t < rayIn.start || t > rayIn.end) {
+        	t = tPos;
+        	if (t < rayIn.start || t > rayIn.end) { 
+        		// both are out of range
+        		System.out.println("fai");
+        		return false;
+        	}
+        }
 
 	    // If there was an intersection, fill out the intersection record
         Vector3d location = new Vector3d(rayIn.origin.clone().add(rayIn.direction.clone().mul(t)));
-        Vector3d normal = location.clone().sub(center);
+        Vector3d centerToHit = location.clone().sub(center);
+        Vector3d normal = centerToHit.clone().normalize();
+       
 
         //Calculate uv by using spherical coordinates and the last assignment's method of calculation
         // horizontal angle, starting at 0 on positive x axis
-        double theta = Math.acos(location.z / radius) * 2;
+        double theta = Math.atan(centerToHit.y / centerToHit.x);
         // Vertical angle, starting at 0 on position y axis
-        double phi = Math.atan(location.y / location.x) * 2;
-        // u is basically just a percentage of a circle in the xz plane that has been completed so far
-        double u = theta / (2 * Math.PI);
-        // v is the percentage of the vertical distances that have been completed so far, starting at 1 going to 0
-        double v = (location.z == -1) ? 0 : 1 - phi / Math.PI;
-        Vector2d texCoords = new Vector2d(u, v);
+        double phi = Math.atan(Math.sqrt((centerToHit.x * centerToHit.x) + (centerToHit.y * centerToHit.y)) / centerToHit.z); 
+        
+        Vector2d texCoords = new Vector2d(phi, theta);
 
         outRecord.location.set(location);
         outRecord.texCoords.set(texCoords);
@@ -83,7 +88,7 @@ public class Sphere extends Surface {
         outRecord.t = t;
         outRecord.surface = this;
 	    
-	    return false;
+	    return true;
   }
   
   /**
