@@ -1,6 +1,7 @@
 package ray1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 
@@ -146,9 +147,21 @@ public class Scene {
 		//          4) If anyIntersection is true, return immediately.
 		//		    5) Set outRecord to the IntersectionRecord of the first object hit.
 		//		    6) If there was an intersection, return true; otherwise return false.
+		boolean hasIntersection = false;
 
-		boolean ret = false;
-	
-		return ret;
+		for (Surface surface : surfaces) {
+			IntersectionRecord record = new IntersectionRecord();
+			boolean didIntersect = surface.intersect(record, rayIn);
+			if (didIntersect) {
+				if (anyIntersection) return true;
+
+				// Don't even check for things further away now
+				rayIn.end = record.t;
+				outRecord.set(record);
+				hasIntersection = true;
+			}
+		}
+
+		return hasIntersection;
 	}
 }
