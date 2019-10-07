@@ -36,10 +36,13 @@ public abstract class ReflectionShader extends Shader {
 	 */
 	@Override
 	public void shade(Colorf outIntensity, Scene scene, Ray ray, IntersectionRecord record, int depth) {
-		if (record.surface == null) return;
-
 		Vector3d incoming = new Vector3d();
 		Vector3d outgoing = new Vector3d();
+
+		Colorf rayColor = new Colorf();
+		scene.getFirstIntersection(record, ray);
+		if (record.surface == null) rayColor = (Colorf)scene.getBackColor();
+		else RayTracer.shadeRay(rayColor, scene, ray, depth);
 				
 		outgoing.set(ray.origin).sub(record.location).normalize();
 		Vector3d surfaceNormal = record.normal;
@@ -52,11 +55,13 @@ public abstract class ReflectionShader extends Shader {
 		
 		// TODO#Ray Task 5: Fill in this function.
 		// 1) Loop through each light in the scene.
-		for (Light light : scene.getLights()) {
+		
+		for (Light light : scene.getLights()) {	
 			// 2) If the intersection point is shadowed, skip the calculation for the light.
 			//	  See Shader.java for a useful shadowing function.
-			if (record.surface.getShader().isShadowed(scene, light, record)) continue;
-
+			if (record.surface != null && record.surface.getShader().isShadowed(scene, light, record))
+				continue;
+			
 			// 3) Compute the incoming direction by subtracting
 			//    the intersection point from the light's position.
 			Vector3d lightPos = new Vector3d(light.position.clone());
@@ -64,6 +69,7 @@ public abstract class ReflectionShader extends Shader {
 
 			// line from hit point to eye
 			Vector3d camPos = new Vector3d(scene.getCamera().getViewPoint().clone());
+			
 			Vector3d outgoingDir = camPos.clone().sub(record.location);
 
 			// 4) Compute the color of the point using the shading model.
@@ -72,14 +78,21 @@ public abstract class ReflectionShader extends Shader {
 			brdf.EvalBRDF(incomingDir, outgoingDir, surfaceNormal, texCoords, BRDFColor);
 
 			// 5) Add the computed color value to the output.
-			outIntensity.add(BRDFColor);
+            Colorf finalColor = (Colorf)BRDFColor.clone();
+            double max = Math.max(surfaceNormal.dot(incomingDir), 0);
+            double dist = incomingDir.len();
+            double factor = max / (dist * dist);
+            Colorf intensityFactored = (Colorf)light.intensity.clone().mul((float)factor);
+            finalColor.mul(intensityFactored);
+
+			outIntensity.add(finalColor);
 
 			// 6) If mirrorCoefficient is not zero vector, add recursive mirror reflection
 			if (!mirrorCoefficient.isZero()) {
 				//		6a) Compute the mirror reflection ray direction by reflecting the direction vector of "ray" about surface normal
 				Vector3d reflectionDir = outgoingDir.clone().add(
 						((surfaceNormal.clone().sub(outgoingDir)).mul((2 * surfaceNormal.dot(outgoingDir))))
-				).normalize();
+				);
 				//		6b) Construct mirror reflection ray starting from the intersection point (record.location) and pointing along
 				//			direction computed in 6a) (Hint: remember to call makeOffsetRay to avoid self-intersecting)
 				Ray reflectionRay = new Ray(record.location.clone(), reflectionDir.clone());
@@ -101,6 +114,8 @@ public abstract class ReflectionShader extends Shader {
 				outIntensity.add(reflectionColor);
 			}
 		}
+		
+		System.out.println("Final Color: " + outIntensity);
 	}
 
 }
