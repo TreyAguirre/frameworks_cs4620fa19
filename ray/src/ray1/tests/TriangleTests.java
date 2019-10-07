@@ -15,7 +15,7 @@ import ray1.surface.Surface;
 import ray1.surface.Triangle;
 
 public class TriangleTests {
-
+	
     @Test
     public void testIntersectNoNormals() {
         System.out.println("\nTesting triangle intersection: owner does not have normals.");

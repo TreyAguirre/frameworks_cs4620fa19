@@ -26,6 +26,8 @@ public class LambertianBRDF extends BRDF {
 		// TODO#Ray: Evaluate the BRDF value of Lambertian reflectance and set it to variable BRDFValue
 		// Hint: getDiffuseReflectance() method can be helpful.
 
+		// Ld = (R / PI) * (max(0, n dot l) / r^2) * I)
+
 	}
 
 }

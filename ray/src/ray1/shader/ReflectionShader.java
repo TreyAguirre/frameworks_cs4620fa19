@@ -50,23 +50,49 @@ public abstract class ReflectionShader extends Shader {
 		outIntensity.setZero();
 		
 		// TODO#Ray Task 5: Fill in this function.
-				// 1) Loop through each light in the scene.
-				// 2) If the intersection point is shadowed, skip the calculation for the light.
-				//	  See Shader.java for a useful shadowing function.
-				// 3) Compute the incoming direction by subtracting
-				//    the intersection point from the light's position.
-				// 4) Compute the color of the point using the shading model. 
-				//	  EvalBRDF method of brdf object should be called to evaluate BRDF value at the shaded surface point.
-				// 5) Add the computed color value to the output.
-				// 6) If mirrorCoefficient is not zero vector, add recursive mirror reflection
+		// 1) Loop through each light in the scene.
+		for (Light light : scene.getLights()) {
+			// 2) If the intersection point is shadowed, skip the calculation for the light.
+			//	  See Shader.java for a useful shadowing function.
+			if (record.surface.getShader().isShadowed(scene, light, record)) continue;
+
+			// 3) Compute the incoming direction by subtracting
+			//    the intersection point from the light's position.
+			Vector3d lightPos = new Vector3d(light.position.clone());
+			Vector3d incomingDir = lightPos.clone().sub(record.location.clone()).normalize();
+
+			// line from hit point to eye
+			Vector3d camPos = new Vector3d(scene.getCamera().getViewPoint().clone());
+			Vector3d outgoingDir = camPos.clone().sub(record.location).normalize();
+
+			// 4) Compute the color of the point using the shading model.
+			//	  EvalBRDF method of brdf object should be called to evaluate BRDF value at the shaded surface point.
+			Colorf BRDFColor = new Colorf();
+			brdf.EvalBRDF(incomingDir, outgoingDir, surfaceNormal, texCoords, BRDFColor);
+
+			// 5) Add the computed color value to the output.
+			outIntensity.add(BRDFColor);
+
+			// 6) If mirrorCoefficient is not zero vector, add recursive mirror reflection
+			if (!mirrorCoefficient.isZero()) {
 				//		6a) Compute the mirror reflection ray direction by reflecting the direction vector of "ray" about surface normal
-				//		6b) Construct mirror reflection ray starting from the intersection point (record.location) and pointing along 
+				Vector3d reflectionDir = outgoingDir.clone().add(
+						((surfaceNormal.clone().sub(outgoingDir)).mul((2 * surfaceNormal.dot(outgoingDir))))
+				).normalize();
+				//		6b) Construct mirror reflection ray starting from the intersection point (record.location) and pointing along
 				//			direction computed in 6a) (Hint: remember to call makeOffsetRay to avoid self-intersecting)
-				//      6c) Compute the Fresnel's refectance coefficient with Schlick's approximation 
+				Ray reflectionRay = new Ray(record.location.clone(), reflectionDir.clone());
+				reflectionRay.makeOffsetSegment(record.t);
+				//      6c) Compute the Fresnel's refectance coefficient with Schlick's approximation
 				// 		6d) call RayTracer.shadeRay() with the mirror reflection ray and (depth+1)
+				Colorf reflectionColor = new Colorf();
+				RayTracer.shadeRay(reflectionColor, scene, reflectionRay, depth+1);
 				// 		6e) add returned color value in 6d) to output
+				outIntensity.add(reflectionColor);
+			}
+		}
 		
-	
+
 		// recursive reflection
 
 		

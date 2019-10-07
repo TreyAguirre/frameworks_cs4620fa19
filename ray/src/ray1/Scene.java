@@ -148,6 +148,9 @@ public class Scene {
 		//		    5) Set outRecord to the IntersectionRecord of the first object hit.
 		//		    6) If there was an intersection, return true; otherwise return false.
 		boolean hasIntersection = false;
+		
+		double minT = Double.MAX_VALUE;
+		IntersectionRecord minRecord = new IntersectionRecord();
 
 		for (Surface surface : surfaces) {
 			IntersectionRecord record = new IntersectionRecord();
@@ -156,11 +159,16 @@ public class Scene {
 				if (anyIntersection) return true;
 
 				// Don't even check for things further away now
-				rayIn.end = record.t;
-				outRecord.set(record);
-				hasIntersection = true;
+				if (record.t < minT) {
+					minT = record.t;
+					minRecord = record;
+					
+					hasIntersection = true;
+				}
 			}
 		}
+		
+		outRecord.set(minRecord);
 
 		return hasIntersection;
 	}

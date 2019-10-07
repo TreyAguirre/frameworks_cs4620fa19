@@ -254,15 +254,23 @@ public class RayTracer {
 	public static void shadeRay(Colorf outColor, Scene scene, Ray ray, int depth) {
 		// TODO#Ray Task 4: Compute the color of the intersection point.
 		// 1) If depth is greater than MAX_DEPTH, return immediately.
+		ray.makeOffsetRay();
+
+		if (depth > MAX_DEPTH) return;
 		// 2) Find the first intersection of "ray" with the scene.
 		//    Record intersection in intersectionRecord. If it doesn't hit anything,
 		//    just return the scene's background color.
-		// 3) Get the shader from the intersection record.
-		// 4) Call the shader's shade() method to set the color for this ray.
-		
-		// Reset the output color
-		outColor.setZero();
-		
-				
+		IntersectionRecord record = new IntersectionRecord();
+		boolean hasIntersection = scene.getFirstIntersection(record, ray);
+		if (hasIntersection) {
+			ray.makeOffsetSegment(record.t);
+
+			// 3) Get the shader from the intersection record.
+			Shader shader = record.surface.getShader();
+			// 4) Call the shader's shade() method to set the color for this ray.
+			shader.shade(outColor, scene, ray, record, depth);
+		} else {
+			outColor.set(scene.backColor);
+		}
 	}
 }

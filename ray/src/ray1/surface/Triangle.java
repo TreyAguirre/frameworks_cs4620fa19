@@ -112,9 +112,9 @@ public class Triangle extends Surface {
 
     Vector3d normal;
     if (face.hasNormals()) {
-      Vector3d n0 = new Vector3d(owner.getMesh().getNormal(face, face.normals[0]).clone()).mul(alpha);
-      Vector3d n1 = new Vector3d(owner.getMesh().getNormal(face, face.normals[1]).clone()).mul(beta);
-      Vector3d n2 = new Vector3d(owner.getMesh().getNormal(face, face.normals[2]).clone()).mul(gamma);
+      Vector3d n0 = new Vector3d(owner.getMesh().getNormal(face, 0).clone()).mul(alpha);
+      Vector3d n1 = new Vector3d(owner.getMesh().getNormal(face, 1).clone()).mul(beta);
+      Vector3d n2 = new Vector3d(owner.getMesh().getNormal(face, 2).clone()).mul(gamma);
 
       // weighted average of each vertex normal
       normal = n0.clone().add(n1).add(n2).normalize();
@@ -124,9 +124,9 @@ public class Triangle extends Surface {
 
     // weighted average of vertex uvs
     if (face.hasUVs()) {
-    	Vector2d texCoord0 = new Vector2d(owner.getMesh().getUV(face, face.uvs[0]).clone()).mul(alpha);
-        Vector2d texCoord1 = new Vector2d(owner.getMesh().getUV(face, face.uvs[1]).clone()).mul(beta);
-        Vector2d texCoord2 = new Vector2d(owner.getMesh().getUV(face, face.uvs[2]).clone()).mul(gamma);
+    	Vector2d texCoord0 = new Vector2d(owner.getMesh().getUV(face, 0).clone()).mul(alpha);
+        Vector2d texCoord1 = new Vector2d(owner.getMesh().getUV(face, 1).clone()).mul(beta);
+        Vector2d texCoord2 = new Vector2d(owner.getMesh().getUV(face, 2).clone()).mul(gamma);
         Vector2d texCoord = texCoord0.clone().add(texCoord1).add(texCoord2).normalize();
         
         outRecord.texCoords.set(texCoord);
