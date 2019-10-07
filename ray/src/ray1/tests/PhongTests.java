@@ -107,7 +107,7 @@ public class PhongTests {
         System.out.println("Testing not shadowed.");
         shader.shade(outIntensity, scene, ray, its, 23);
         expectedIntensity.set(4.022259f, 8.2814045f, 10.679813f);
-
+        
         TestUtils.assertVector3Equal(outIntensity, expectedIntensity);
 
         System.out.println("Testing shadowed.");

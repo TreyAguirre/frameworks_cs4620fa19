@@ -262,6 +262,7 @@ public class RayTracer {
 		//    just return the scene's background color.
 		IntersectionRecord record = new IntersectionRecord();
 		boolean hasIntersection = scene.getFirstIntersection(record, ray);
+		
 		if (hasIntersection) {
 			ray.makeOffsetSegment(record.t);
 

@@ -71,9 +71,10 @@ public class PerspectiveCamera extends Camera {
         //    [-vieHeight / 2, +viewHeight / 2]
         inU = inU * viewWidth - viewWidth / 2f;
         inV = inV * viewHeight - viewHeight /2f;
+        
         // 2) Set the origin field of outRay for a perspective camera.
         Vector3d camOrigin = new Vector3d(viewPoint.clone());
-        Vector3d camView = new Vector3d(viewDir);
+        Vector3d camView = new Vector3d(viewDir.clone().normalize());
         // 3) Set the direction field of outRay for an perspective camera. This
         //    should depend on your transformed inU and inV and your basis vectors,
         //    as well as the projection distance.

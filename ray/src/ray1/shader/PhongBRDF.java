@@ -39,6 +39,7 @@ public class PhongBRDF extends BRDF {
 
 		Colorf brdf = (Colorf)left.clone().add(right.clone());
 		BRDFValue.set(brdf.clone());
+		System.out.println(BRDFValue);
 	}
 
 }

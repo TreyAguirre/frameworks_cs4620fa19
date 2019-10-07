@@ -7,7 +7,9 @@ import java.util.Iterator;
 
 import ray1.camera.Camera;
 import egl.math.Colorf;
+import egl.math.Vector3d;
 import ray1.shader.Shader;
+import ray1.surface.Sphere;
 import ray1.surface.Surface;
 import ray1.shader.Texture;
 import ray1.shader.BRDF;
@@ -123,7 +125,6 @@ public class Scene {
 	 */
 	public boolean getFirstIntersection(IntersectionRecord outRecord, Ray ray) {
 		return intersect(outRecord, ray, false);
-		
 	}
 	
 	/**
@@ -149,27 +150,18 @@ public class Scene {
 		//		    6) If there was an intersection, return true; otherwise return false.
 		boolean hasIntersection = false;
 		
-		double minT = Double.MAX_VALUE;
-		IntersectionRecord minRecord = new IntersectionRecord();
-
 		for (Surface surface : surfaces) {
 			IntersectionRecord record = new IntersectionRecord();
+			
 			boolean didIntersect = surface.intersect(record, rayIn);
 			if (didIntersect) {
 				if (anyIntersection) return true;
-
-				// Don't even check for things further away now
-				if (record.t < minT) {
-					minT = record.t;
-					minRecord = record;
-					
-					hasIntersection = true;
-				}
-			}
+				
+				outRecord.set(record);
+				rayIn.makeOffsetSegment(record.t);
+				hasIntersection = true;
+			} 
 		}
-		
-		outRecord.set(minRecord);
-
 		return hasIntersection;
 	}
 }

@@ -42,20 +42,20 @@ public class Sphere extends Surface {
         // we can get this by finding t in the equation r(t) = p + td, where p is the origin of RayIn and d is the direction
         Vector3d originMinusCenter = rayIn.origin.clone().sub(center.clone());
         double dirDotDir = rayIn.direction.clone().dot(rayIn.direction.clone());
-
+        
         double A = dirDotDir;
-        double B = 2 * rayIn.direction.clone().dot(originMinusCenter.clone());
+        double B = rayIn.direction.clone().dot(originMinusCenter.clone());
         double C = originMinusCenter.clone().dot(originMinusCenter.clone()) - radius*radius;
 
         // if the determinant is negative, return false
-        double determinant = B*B - 4*A*C;
+        double determinant = B*B - A*C;
         if (determinant < 0) {
         	return false;
         }
-          
+        
         double determinantSqrt = Math.sqrt(determinant);
-        double tPos = (-B + determinantSqrt) / (2 * A);
-        double tNeg = (-B - determinantSqrt) / (2 * A);
+        double tPos = (-B + determinantSqrt) / (A);
+        double tNeg = (-B - determinantSqrt) / (A);
         
         double t = tNeg;
         if (t < rayIn.start || t > rayIn.end) {
@@ -65,12 +65,13 @@ public class Sphere extends Surface {
         		return false;
         	}
         }
-
+        
+        
 	    // If there was an intersection, fill out the intersection record
         Vector3d location = new Vector3d(rayIn.origin.clone().add(rayIn.direction.clone().mul(t)));
         Vector3d centerToHit = location.clone().sub(center);
         Vector3d normal = centerToHit.clone().normalize();
-       
+        
         //Calculate uv by using spherical coordinates and the last assignment's method of calculation
         // horizontal angle, starting at 0 on positive x axis
         double theta = Math.atan(centerToHit.y / centerToHit.x);
@@ -84,7 +85,7 @@ public class Sphere extends Surface {
         outRecord.normal.set(normal);
         outRecord.t = t;
         outRecord.surface = this;
-	    
+        
 	    return true;
   }
   
