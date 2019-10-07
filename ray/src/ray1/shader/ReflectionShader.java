@@ -36,7 +36,8 @@ public abstract class ReflectionShader extends Shader {
 	 */
 	@Override
 	public void shade(Colorf outIntensity, Scene scene, Ray ray, IntersectionRecord record, int depth) {
-		
+		if (record.surface == null) return;
+
 		Vector3d incoming = new Vector3d();
 		Vector3d outgoing = new Vector3d();
 				
@@ -59,11 +60,11 @@ public abstract class ReflectionShader extends Shader {
 			// 3) Compute the incoming direction by subtracting
 			//    the intersection point from the light's position.
 			Vector3d lightPos = new Vector3d(light.position.clone());
-			Vector3d incomingDir = lightPos.clone().sub(record.location.clone()).normalize();
+			Vector3d incomingDir = lightPos.clone().sub(record.location.clone());
 
 			// line from hit point to eye
 			Vector3d camPos = new Vector3d(scene.getCamera().getViewPoint().clone());
-			Vector3d outgoingDir = camPos.clone().sub(record.location).normalize();
+			Vector3d outgoingDir = camPos.clone().sub(record.location);
 
 			// 4) Compute the color of the point using the shading model.
 			//	  EvalBRDF method of brdf object should be called to evaluate BRDF value at the shaded surface point.
@@ -83,19 +84,23 @@ public abstract class ReflectionShader extends Shader {
 				//			direction computed in 6a) (Hint: remember to call makeOffsetRay to avoid self-intersecting)
 				Ray reflectionRay = new Ray(record.location.clone(), reflectionDir.clone());
 				reflectionRay.makeOffsetSegment(record.t);
-				//      6c) Compute the Fresnel's refectance coefficient with Schlick's approximation
+				//      6c) Compute the Fresnel's reflectance coefficient with Schlick's approximation
+				double theta = incomingDir.clone().angle(surfaceNormal.clone());
+				Colorf oneMinusMirror = new Colorf();
+				oneMinusMirror.x = 1 - mirrorCoefficient.x;
+				oneMinusMirror.y = 1 - mirrorCoefficient.y;
+				oneMinusMirror.z = 1 - mirrorCoefficient.z;
+				Colorf mirrorReflectance =
+						(Colorf)mirrorCoefficient.clone()
+								.add(oneMinusMirror.clone().mul((float)Math.pow(1 - Math.cos(theta), 5)));
 				// 		6d) call RayTracer.shadeRay() with the mirror reflection ray and (depth+1)
 				Colorf reflectionColor = new Colorf();
 				RayTracer.shadeRay(reflectionColor, scene, reflectionRay, depth+1);
+				reflectionColor.mul(mirrorReflectance);
 				// 		6e) add returned color value in 6d) to output
 				outIntensity.add(reflectionColor);
 			}
 		}
-		
-
-		// recursive reflection
-
-		
 	}
 
 }
