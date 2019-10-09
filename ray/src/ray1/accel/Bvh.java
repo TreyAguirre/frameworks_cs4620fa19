@@ -174,10 +174,14 @@ public class Bvh implements AccelStruct {
 
 		// ==== Step 5 ====
 		// Recursively create left and right children.
-		BvhNode left = new BvhNode();
-		BvhNode right = new BvhNode();
+		BvhNode node = new BvhNode();
+
+		node.surfaceIndexStart = start;
+		node.surfaceIndexEnd = end;
 
 		int m = start + (end - start) / 2;
+		node.child[0] = createTree(start, m);
+		node.child[1] = createTree(m, end);
 
 		return root;
 	}
