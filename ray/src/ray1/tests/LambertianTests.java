@@ -107,6 +107,8 @@ public class LambertianTests {
         shader.shade(outIntensity, scene, ray, its, 23);
         expectedIntensity.set(0.0f, 1.875f, 3.125f);
         expectedIntensity.div((float)Math.PI);
+        System.out.println("Expected: " + expectedIntensity);
+        System.out.println("Out: " + outIntensity);
         TestUtils.assertVector3Equal(outIntensity, expectedIntensity);
 
         System.out.println("All tests passed.\n");
