@@ -28,7 +28,6 @@ public class PerspectiveCamera extends Camera {
     //TODO#Ray Task 1: create necessary new variables/objects here, including an orthonormal basis
     //          formed by three basis vectors and any other helper variables 
     //          if needed.
-
     // Useful explanation of different spaces https://learnopengl.com/Getting-started/Coordinate-Systems
 
     // Perspective projection matrix, maps from 3D world space to the on-screen 2D image space

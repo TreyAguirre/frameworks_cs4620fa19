@@ -5,6 +5,7 @@ import ray1.IntersectionRecord;
 import ray1.Ray;
 import ray1.shader.Shader;
 import ray1.OBJFace;
+import ray1.accel.BboxUtils;
 
 /**
  * Represents a single triangle, part of a triangle mesh
@@ -16,10 +17,10 @@ public class Triangle extends Surface {
   Vector3 norm;
   
   /** The mesh that contains this triangle */
-  Mesh owner;
+  public Mesh owner;
   
   /** The face that contains this triangle */
-  OBJFace face = null;
+  public OBJFace face = null;
   
   double a, b, c, d, e, f;
 
@@ -63,6 +64,7 @@ public class Triangle extends Surface {
    * @return true if the surface intersects the ray
    */
   public boolean intersect(IntersectionRecord outRecord, Ray rayIn) {
+
     // TODO#Ray Task 2: fill in this function.
     // The derivation for these calculations can be found in section 4.4 of the textbook
     if (owner == null || face == null) return false;
@@ -137,8 +139,11 @@ public class Triangle extends Surface {
     outRecord.normal.set(normal);
     outRecord.surface = this;
     outRecord.t = t;
-
 	return true;
+  }
+  
+  public void computeBoundingBox(){
+	  BboxUtils.triangleBBox(this);
   }
 
   /**

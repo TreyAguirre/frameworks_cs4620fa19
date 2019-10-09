@@ -5,6 +5,7 @@ import ray1.IntersectionRecord;
 import ray1.Ray;
 import egl.math.Vector3;
 import egl.math.Vector3d;
+import ray1.accel.BboxUtils;
 
 /**
  * Represents a sphere as a center and a radius.
@@ -16,10 +17,12 @@ public class Sphere extends Surface {
   /** The center of the sphere. */
   protected final Vector3 center = new Vector3();
   public void setCenter(Vector3 center) { this.center.set(center); }
+  public Vector3 getCenter() {return this.center.clone();}
   
   /** The radius of the sphere. */
   protected float radius = 1.0f;
   public void setRadius(float radius) { this.radius = radius; }
+  public float getRadius() {return this.radius;}
   
   protected final double M_2PI = 2 * Math.PI;
   
@@ -87,6 +90,13 @@ public class Sphere extends Surface {
         outRecord.surface = this;
         
 	    return true;
+  }
+  
+  /**
+   * Compute Bounding Box for sphere
+   * */
+  public void computeBoundingBox() {
+	  BboxUtils.sphereBBox(this);
   }
   
   /**
