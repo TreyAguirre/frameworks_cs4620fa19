@@ -31,12 +31,13 @@ public class PhongBRDF extends BRDF {
 	public void EvalBRDF(Vector3d incoming, Vector3d outgoing, Vector3d surfaceNormal, Vector2 texCoords, Colorf BRDFValue) 
 	{	
 		// TODO#Ray Task 5: Evaluate the BRDF value of Phong reflection model
-		Colorf left = getDiffuseReflectance(texCoords.clone());
+		Colorf left = new Colorf();
+		left.set(getDiffuseReflectance(texCoords.clone()).mul(specularColor));
 		left.mul(1 / (float)Math.PI);
 		Vector3d h = (incoming.clone().add(outgoing.clone())).normalize();
 		double max = Math.max(h.dot(surfaceNormal), 0);
-		Colorf right = (Colorf) specularColor.clone().mul((float)Math.pow(max, exponent));
+		Colorf right = new Colorf();
+		right.set(specularColor.clone().mul((float)Math.pow(max, exponent)));
 		BRDFValue.set(left.clone().add(right.clone()));
 	}
-
 }

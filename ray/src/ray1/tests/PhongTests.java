@@ -52,6 +52,10 @@ public class PhongTests {
         light0.setPosition(new Vector3(1.0f, 5.0f, 1.0f));
         shader.shade(outIntensity, scene, ray, its, 23);
         expectedIntensity.set(5.162396f, 5.996022f, 5.996022f);
+        
+        System.out.println("Out: " + outIntensity);
+        System.out.println("Expected: " + expectedIntensity);
+        System.out.println("Difference: " + outIntensity.clone().sub(expectedIntensity).normalize());
         TestUtils.assertVector3Equal(outIntensity, expectedIntensity);
 
         System.out.println("Testing shadowed.");
@@ -108,6 +112,9 @@ public class PhongTests {
         shader.shade(outIntensity, scene, ray, its, 23);
         expectedIntensity.set(4.022259f, 8.2814045f, 10.679813f);
         
+        System.out.println("Out: " + outIntensity);
+        System.out.println("Expected: " + expectedIntensity);
+        System.out.println("Difference: " + outIntensity.clone().sub(expectedIntensity).normalize());
         TestUtils.assertVector3Equal(outIntensity, expectedIntensity);
 
         System.out.println("Testing shadowed.");
@@ -116,7 +123,7 @@ public class PhongTests {
         scene.addSurface(occluder);
         shader.shade(outIntensity, scene, ray, its, 23);
         expectedIntensity.set(4.022259f, 4.6837916f, 4.6837916f);
-
+        	
         TestUtils.assertVector3Equal(outIntensity, expectedIntensity);
 
         System.out.println("All tests passed.\n");

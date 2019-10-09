@@ -60,8 +60,8 @@ public abstract class ReflectionShader extends Shader {
 			//    the intersection point from the light's position.
 			Vector3d lightPos = new Vector3d(light.position.clone());
 			incoming = lightPos.clone().sub(record.location.clone()).normalize();
-
-			// line from hit point to eye
+			
+			// line from hit point to ray origin
 			outgoing.set(ray.origin.clone().sub(record.location)).normalize();
 
 			// 4) Compute the color of the point using the shading model.
@@ -104,15 +104,14 @@ public abstract class ReflectionShader extends Shader {
 			oneMinusMirror.mul((float)Math.pow(1 - theta, 5));
 
 			// 		6d) call RayTracer.shadeRay() with the mirror reflection ray and (depth+1)
-			Colorf reflectanceCoefficient = (Colorf) mirrorCoefficient.clone().add(oneMinusMirror);
+			Colorf reflectanceCoefficient = new Colorf();
+			reflectanceCoefficient.set(mirrorCoefficient.clone().add(oneMinusMirror));
 			Colorf reflectionColor = new Colorf();
 			RayTracer.shadeRay(reflectionColor, scene, reflectionRay, depth+1);
 			reflectionColor.mul(reflectanceCoefficient);
 			// 		6e) add returned color value in 6d) to output
 			outIntensity.add(reflectionColor);
 		}
-		
-		System.out.println("Final Color: " + outIntensity);
 	}
 
 }
