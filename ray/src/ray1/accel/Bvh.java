@@ -21,7 +21,7 @@ public class Bvh implements AccelStruct {
 	 * */
 	public static int hitCount = 0;
 	public static int missCount = 0;
-	
+
 	/** A shared surfaces array that will be used across every node in the tree. */
 	private Surface[] surfaces;
 
@@ -29,7 +29,7 @@ public class Bvh implements AccelStruct {
 	 *  See the subclass declaration below for details.
 	 */
 	static MyComparator cmp = new MyComparator();
-	
+
 	/** The root of the BVH tree. */
 	BvhNode root;
 
@@ -48,38 +48,34 @@ public class Bvh implements AccelStruct {
 	public boolean intersect(IntersectionRecord outRecord, Ray rayIn, boolean anyIntersection) {
 		return intersectHelper(root, outRecord, rayIn, anyIntersection);
 	}
-	
+
 	/**
 	 * A helper method to the main intersect method. It finds the intersection with
-	 * any of the surfaces under the given BVH node.  
-	 *   
+	 * any of the surfaces under the given BVH node.
+	 *
 	 * @param node a BVH node that we would like to find an intersection with surfaces under it
 	 * @param outRecord the output InsersectionMethod
 	 * @param rayIn the ray to intersect
 	 * @param anyIntersection if true, will immediately return when found an intersection
 	 * @return true if an intersection is found with any surface under the given node
 	 */
-	private boolean intersectHelper(BvhNode node, IntersectionRecord outRecord, Ray rayIn, boolean anyIntersection)
-	{
+	private boolean intersectHelper(BvhNode node, IntersectionRecord outRecord, Ray rayIn, boolean anyIntersection) {
 		// TODO#Ray Part 2 Task 3: fill in this function.
 		// Hint: For a leaf node, use a normal linear search. Otherwise, search in the left and right children.
 		// Another hint: save time by checking if the ray intersects the node first before checking the childrens.
-		
+
 		// ==== Step 1 ====
 		// Check whether the ray intersect with the current node's bounding box, if not return false
 
 
-		
-		
 		// ==== Step 2 ====
 		// Check if current node is leaf
 		// If current node is leaf, loop over all the surface in this leaf, do surface intersection check, find the first intersection
-		// If current node is not a leaf, call intersectHelper recursively for left and right child of the node, 
-		
+		// If current node is not a leaf, call intersectHelper recursively for left and right child of the node,
+
 		boolean ret = false;
 		return ret;
 	}
-
 
 	@Override
 	public void build(Surface[] surfaces) {
@@ -92,14 +88,14 @@ public class Bvh implements AccelStruct {
 		System.out.println("Bvh: max depth " + maxDepth(root));
 		System.out.println("Bvh: average child volume ratio " + volRatio(root).mean);
 	}
-	
+
 	/**
 	 * Create a BVH [sub]tree.  This tree node will be responsible for storing
 	 * and processing surfaces[start] to surfaces[end-1]. If the range is small enough,
 	 * this will create a leaf BvhNode. Otherwise, the surfaces will be sorted according
 	 * to the axis of the axis-aligned bounding box that is widest, and split into 2
 	 * children.
-	 * 
+	 *
 	 * @param start The start index of surfaces
 	 * @param end The end index of surfaces
 	 */
@@ -114,39 +110,40 @@ public class Bvh implements AccelStruct {
 		minX = minY = minZ = Double.MAX_VALUE;
 		double maxX, maxY, maxZ;
 		maxX = maxY = maxZ = Double.MIN_VALUE;
-		
+
 		for (int i = start; i < end; i++) {
 			Surface s = surfaces[i];
-			
+
 			Vector3d minBound = s.getMinBound().clone();
 			Vector3d maxBound = s.getMaxBound().clone();
 			
 			if (minBound.x < minX) minX = minBound.x;
-			if (minBound.y < minX) minY = minBound.y;
-			if (minBound.z < minX) minZ = minBound.z;
-			
-			if (maxBound.x > maxX) minX = minBound.x;
-			if (maxBound.y > maxY) minY = minBound.y;
-			if (maxBound.z > maxZ) minZ = minBound.z;
+			if (minBound.y < minY) minY = minBound.y;
+			if (minBound.z < minZ) minZ = minBound.z;
+
+			if (maxBound.x > maxX) maxX = maxBound.x;
+			if (maxBound.y > maxY) maxY = maxBound.y;
+			if (maxBound.z > maxZ) maxZ = maxBound.z;
 		}
-		
+
 		Vector3d minBound = new Vector3d(minX, minY, minZ);
 		Vector3d maxBound = new Vector3d(maxX, maxY, maxZ);
+
 		// ==== Step 2 ====
-		// Check for the base case. 
+		// Check for the base case.
 		// If the range [start, end) is small enough (e.g. less than or equal to 10), just return a new leaf node.
 		if (end - start <= 10) {
 			BvhNode leaf = new BvhNode();
 			leaf.minBound.set(minBound.clone());
 			leaf.maxBound.set(maxBound.clone());
-			
+
 			// leaf should only contain one surface
 			leaf.surfaceIndexStart = start;
-			leaf.surfaceIndexEnd = start+1;
-			
+			leaf.surfaceIndexEnd = end;
+
 			return leaf;
 		}
-		
+
 		// ==== Step 3 ====
 		// Figure out the widest dimension (x or y or z).
 		// If x is the widest, set widestDim = 0. If y, set widestDim = 1. If z, set widestDim = 2.
@@ -156,7 +153,7 @@ public class Bvh implements AccelStruct {
 		} else if(maxBound.z > maxBound.x && maxBound.z > maxBound.y) {
 			widestDim = WidestDimension.Z;
 		}
-		
+
 		// ==== Step 4 ====
 		// Sort surfaces according to the widest dimension.
 		// copy elements to be sorted into new array
@@ -170,7 +167,7 @@ public class Bvh implements AccelStruct {
 		for (int i = start; i < end; i++) {
 			surfaces[i] = surfacesToSort[i - start];
 		}
-		// subarrya is now sorted!
+		// subarray is now sorted!
 
 		// ==== Step 5 ====
 		// Recursively create left and right children.
@@ -178,20 +175,23 @@ public class Bvh implements AccelStruct {
 
 		node.surfaceIndexStart = start;
 		node.surfaceIndexEnd = end;
+		node.minBound.set(minBound.clone());
+		node.maxBound.set(maxBound.clone());
 
 		int m = start + (end - start) / 2;
 		node.child[0] = createTree(start, m);
 		node.child[1] = createTree(m, end);
-
+		
+		root = node;
+		
 		return root;
 	}
-	
+
 	private int maxDepth(BvhNode node) {
 		if (node.isLeaf())
 			return 0;
 		return 1 + Math.max(maxDepth(node.child[0]), maxDepth(node.child[1]));
 	}
-	
 
 	private int nodeCount(BvhNode node) {
 		if (node.isLeaf())
@@ -204,19 +204,19 @@ public class Bvh implements AccelStruct {
 			return 1;
 		return leafCount(node.child[0]) + leafCount(node.child[1]);
 	}
-	
+
 	/*
 	 * Average over all internal nodes of the ratio between the sum
 	 * of the children's volumes and the parent's volume.
 	 */
-	private class RatioResult { 
-		double mean; int count; 
+	private class RatioResult {
+		double mean; int count;
 		RatioResult(double mean, int count) {
 			this.mean = mean;
 			this.count = count;
 		}
 	}
-	
+
 	private RatioResult volRatio(BvhNode node) {
 		if (node.isLeaf())
 			return new RatioResult(0.0, 0);
@@ -227,13 +227,12 @@ public class Bvh implements AccelStruct {
 		double mean = (ratio + r0.mean * r0.count + r1.mean * r1.count) / count;
 		return new RatioResult(mean, count);
 	}
-	
+
 	private double nodeVol(BvhNode node) {
-		return ((node.maxBound.x - node.minBound.x) * 
-				(node.maxBound.y - node.minBound.y) * 
+		return ((node.maxBound.x - node.minBound.x) *
+				(node.maxBound.y - node.minBound.y) *
 				(node.maxBound.z - node.minBound.z));
 	}
-
 }
 
 /**

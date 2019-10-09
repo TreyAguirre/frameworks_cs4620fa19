@@ -56,7 +56,7 @@ public class BvhTests {
     }
     
     @Test
-    public static void testComputeBoundingBox() {
+    public void testComputeBoundingBox() {
         // Sphere Bound and Triangle Bound
         //================================================================================================
        
@@ -189,7 +189,7 @@ public class BvhTests {
     }
 
     @Test
-    public static void testBvhNodeIntersection() {
+    public void testBvhNodeIntersection() {
         BvhNode node = new BvhNode(new Vector3d(0, 0, 0), new Vector3d(1, 1, 1), null, null, 0, 0);
         Ray ray = new Ray(new Vector3d(-1, -1, -1), new Vector3d(1, 1, 1));
         ray.makeOffsetRay();
@@ -242,7 +242,7 @@ public class BvhTests {
      * This test will only work if the student has decided that they should have at most 10
      * surfaces on a leaf node.
      */
-    public static void testBvhTreeCreation() throws Exception {
+    public void testBvhTreeCreation() throws Exception {
     	setUpBeforeClass();
         // Testing bvh with 1 element
         //================================================================================================
@@ -260,9 +260,11 @@ public class BvhTests {
         
         assertTrue("Bvh20's left child should contain 10 elements.", 
                    bvh20.root.child[0].surfaceIndexEnd - bvh20.root.child[0].surfaceIndexStart == 10);
+        
         assertTrue("Bvh20's right child should contain 10 elements.", 
                    bvh20.root.child[1].surfaceIndexEnd - bvh20.root.child[1].surfaceIndexStart == 10);
         
+        System.out.println("bvh20 minbound = " + bvh20.root.minBound);
         assertTrue("Minbound of bvh20 should be <-1, -1, -1>.", 
                    vectorsEqual(bvh20.root.minBound, new Vector3d(-1, -1, -1)));
         assertTrue("Maxbound of bvh20 should be <1, 20, 1>.",
@@ -522,11 +524,12 @@ public class BvhTests {
     
     public static void main(String args[]) throws Exception {
     	System.out.print("Bounding Box Computation Test:\n");
-    	testComputeBoundingBox();
+    	BvhTests bvhTest = new BvhTests();
+    	bvhTest.testComputeBoundingBox();
     	System.out.print("Bounding Box Intersection Test:\n");
-    	testBvhNodeIntersection();
+    	bvhTest.testBvhNodeIntersection();
     	System.out.print("Build Tree Test: \n");
-    	testBvhTreeCreation();
+    	bvhTest.testBvhTreeCreation();
     }
 
 }
