@@ -2,6 +2,7 @@
 package ray1.accel;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 import egl.math.Vector3d;
@@ -109,24 +110,74 @@ public class Bvh implements AccelStruct {
 		// Find out the BIG bounding box enclosing all the surfaces in the range [start, end)
 		// and store them in minB and maxB.
 		// Hint: To find the bounding box for each surface, use getMinBound() and getMaxBound() */
-
+		double minX, minY, minZ;
+		minX = minY = minZ = Double.MAX_VALUE;
+		double maxX, maxY, maxZ;
+		maxX = maxY = maxZ = Double.MIN_VALUE;
+		
+		for (int i = start; i < end; i++) {
+			Surface s = surfaces[i];
+			
+			Vector3d minBound = s.getMinBound().clone();
+			Vector3d maxBound = s.getMaxBound().clone();
+			
+			if (minBound.x < minX) minX = minBound.x;
+			if (minBound.y < minX) minY = minBound.y;
+			if (minBound.z < minX) minZ = minBound.z;
+			
+			if (maxBound.x > maxX) minX = minBound.x;
+			if (maxBound.y > maxY) minY = minBound.y;
+			if (maxBound.z > maxZ) minZ = minBound.z;
+		}
+		
+		Vector3d minBound = new Vector3d(minX, minY, minZ);
+		Vector3d maxBound = new Vector3d(maxX, maxY, maxZ);
 		// ==== Step 2 ====
 		// Check for the base case. 
 		// If the range [start, end) is small enough (e.g. less than or equal to 10), just return a new leaf node.
-
+		if (end - start <= 10) {
+			BvhNode leaf = new BvhNode();
+			leaf.minBound.set(minBound.clone());
+			leaf.maxBound.set(maxBound.clone());
+			
+			// leaf should only contain one surface
+			leaf.surfaceIndexStart = start;
+			leaf.surfaceIndexEnd = start+1;
+			
+			return leaf;
+		}
 		
 		// ==== Step 3 ====
 		// Figure out the widest dimension (x or y or z).
 		// If x is the widest, set widestDim = 0. If y, set widestDim = 1. If z, set widestDim = 2.
-
+		WidestDimension widestDim = WidestDimension.X;
+		if (maxBound.y > maxBound.x && maxBound.y > maxBound.z) {
+			widestDim = WidestDimension.Y;
+		} else if(maxBound.z > maxBound.x && maxBound.z > maxBound.y) {
+			widestDim = WidestDimension.Z;
+		}
 		
 		// ==== Step 4 ====
 		// Sort surfaces according to the widest dimension.
-
+		// copy elements to be sorted into new array
+		Surface[] surfacesToSort = new Surface[end - start];
+		for (int i = start; i < end; i++) {
+			surfacesToSort[i-start] = surfaces[i];
+			surfacesToSort[i-start].setWidestDim(widestDim.ordinal());
+		}
+		Arrays.sort(surfacesToSort);
+		// put sorted elements back into array
+		for (int i = start; i < end; i++) {
+			surfaces[i] = surfacesToSort[i - start];
+		}
+		// subarrya is now sorted!
 
 		// ==== Step 5 ====
 		// Recursively create left and right children.
+		BvhNode left = new BvhNode();
+		BvhNode right = new BvhNode();
 
+		int m = start + (end - start) / 2;
 
 		return root;
 	}
@@ -203,4 +254,8 @@ class MyComparator implements Comparator<Surface> {
 		return 0;
 	}
 
+}
+
+enum WidestDimension {
+	X, Y, Z
 }

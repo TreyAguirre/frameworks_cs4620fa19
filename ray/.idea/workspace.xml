@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7731433e-4181-4d77-a699-155b0d463d7c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ray1/accel/BboxUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ray1/accel/BboxUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ray1/accel/Bvh.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ray1/accel/Bvh.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ray1/surface/Surface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ray1/surface/Surface.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -19,91 +20,31 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java">
+        <entry file="file://$PROJECT_DIR$/src/ray1/surface/Surface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="23" column="63" lean-forward="true" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
+            <state relative-caret-position="264">
+              <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/shader/BRDF.java">
+        <entry file="file://$PROJECT_DIR$/src/ray1/accel/BvhNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="48" column="6" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/shader/PhongBRDF.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="55" />
+            <state relative-caret-position="196">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java">
+        <entry file="file://$PROJECT_DIR$/src/ray1/accel/Bvh.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="108" column="79" lean-forward="true" selection-start-line="108" selection-start-column="79" selection-end-line="108" selection-end-column="79" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/surface/Sphere.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/RayTracer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="258" column="38" selection-start-line="258" selection-start-column="38" selection-end-line="258" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/tests/LambertianTests.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/shader/Shader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-89">
-              <caret line="44" column="40" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/surface/Triangle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ray1/tests/TestUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="2044">
+              <caret line="178" column="8" selection-start-line="178" selection-start-column="8" selection-end-line="178" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -140,14 +81,16 @@
         <option value="$PROJECT_DIR$/src/ray1/shader/PhongBRDF.java" />
         <option value="$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java" />
         <option value="$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java" />
+        <option value="$PROJECT_DIR$/src/ray1/surface/Surface.java" />
+        <option value="$PROJECT_DIR$/src/ray1/accel/Bvh.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
-    <option name="width" value="1939" />
-    <option name="height" value="1099" />
+    <option name="width" value="1940" />
+    <option name="height" value="1100" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -155,7 +98,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -173,6 +115,13 @@
               <item name="ray" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ray1" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ray" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ray" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ray1" type="462c0819:PsiDirectoryNode" />
+              <item name="accel" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ray" type="b2602c69:ProjectViewProjectNode" />
@@ -200,6 +149,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -265,11 +215,11 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.RayTracer" />
       <item itemvalue="Application.Camera" />
+      <item itemvalue="Application.RayTracer" />
       <item itemvalue="Application.Tests" />
-      <item itemvalue="JUnit.Triangle" />
       <item itemvalue="JUnit.Spheres" />
+      <item itemvalue="JUnit.Triangle" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -297,7 +247,7 @@
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25704697" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26040268" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -312,7 +262,7 @@
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.09275363" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.04347826" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -385,13 +335,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/surface/Surface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ray1/tests/SphereTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2569">
@@ -461,20 +404,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/tests/TestUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/shader/Shader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-89">
-          <caret line="44" column="40" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ray1/tests/CameraTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-888">
@@ -482,59 +411,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/RayTracer.java">
+    <entry file="file://$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="258" column="38" selection-start-line="258" selection-start-column="38" selection-end-line="258" selection-end-column="38" />
+        <state relative-caret-position="504">
+          <caret line="23" column="63" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/surface/Triangle.java">
+    <entry file="file://$PROJECT_DIR$/src/ray1/shader/BRDF.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
+        <state relative-caret-position="1104">
+          <caret line="48" column="6" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/shader/PhongBRDF.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/RayTracer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5928">
+          <caret line="258" column="38" selection-start-line="258" selection-start-column="38" selection-end-line="258" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ray1/tests/LambertianTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
+        <state relative-caret-position="696">
           <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/shader/Shader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="960">
+          <caret line="44" column="40" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/surface/Triangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1512">
+          <caret line="67" column="46" selection-start-line="67" selection-start-column="46" selection-end-line="67" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/tests/TestUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="109" column="79" selection-start-line="109" selection-start-column="79" selection-end-line="109" selection-end-column="79" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ray1/surface/Sphere.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="245">
-          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+          <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/shader/BRDF.java">
+    <entry file="file://$PROJECT_DIR$/src/ray1/surface/Surface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="48" column="6" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+        <state relative-caret-position="264">
+          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/shader/LambertianBRDF.java">
+    <entry file="file://$PROJECT_DIR$/src/ray1/accel/BvhNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="23" column="63" lean-forward="true" selection-start-line="23" selection-start-column="63" selection-end-line="23" selection-end-column="63" />
+        <state relative-caret-position="196">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/shader/PhongBRDF.java">
+    <entry file="file://$PROJECT_DIR$/src/ray1/accel/Bvh.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ray1/shader/ReflectionShader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="108" column="79" lean-forward="true" selection-start-line="108" selection-start-column="79" selection-end-line="108" selection-end-column="79" />
+        <state relative-caret-position="2044">
+          <caret line="178" column="8" selection-start-line="178" selection-start-column="8" selection-end-line="178" selection-end-column="8" />
         </state>
       </provider>
     </entry>

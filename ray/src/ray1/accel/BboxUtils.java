@@ -2,6 +2,8 @@ package ray1.accel;
 
 import egl.math.Vector3;
 import egl.math.Vector3d;
+import ray1.OBJFace;
+import ray1.OBJMesh;
 import ray1.surface.*;
 
 // TODO#Ray tracing Part 2: Compute the bounding box and store the result in
@@ -14,7 +16,37 @@ public class BboxUtils {
 	public static void triangleBBox(Triangle t) {
 		// TODO#Ray Part 2 Task 1: Compute Bounding Box for a triangle:
 		// Compute t.minBound, t.maxBound, t.averagePosition
-
+		
+		// data
+		OBJMesh mesh = t.owner.getMesh();
+		OBJFace face = t.face;
+		Vector3d v0 = new Vector3d(mesh.getPosition(face, 0));
+		Vector3d v1 = new Vector3d(mesh.getPosition(face, 1));
+		Vector3d v2 = new Vector3d(mesh.getPosition(face, 2));
+		
+		// average position
+		t.averagePosition = new Vector3d(v0.clone().add(v1).add(v2).div(3));
+		
+		double minX, minY, minZ;
+		minX = minY = minZ = Double.MAX_VALUE;
+		
+		double maxX, maxY, maxZ;
+		maxX = maxY = maxZ = Double.MIN_VALUE;
+		
+		for (int i = 0; i < 3; i++) {
+			Vector3d v = new Vector3d(mesh.getPosition(face, i));
+			
+			if (v.x < minX) minX = v.x;
+			if (v.y < minY) minY = v.y;
+			if (v.z < minZ) minZ = v.z;
+			
+			if (v.x > maxX) maxX = v.x;
+			if (v.y > maxY) maxY = v.y;
+			if (v.z > maxZ) maxZ = v.z;
+		}
+		
+		t.minBound = new Vector3d(minX, minY, minZ);
+		t.maxBound = new Vector3d(maxX, maxY, maxZ);
 	}
 	
 	/**
@@ -23,7 +55,18 @@ public class BboxUtils {
 	public static void sphereBBox(Sphere s) {
 		// TODO#Ray Part 2 Task 1: Compute Bounding Box for a Sphere
 		// Compute s.minBound, s.maxBound, s.averagePosition
-			
+		
+		s.averagePosition = new Vector3d(s.getCenter().clone());
+		s.minBound = new Vector3d(
+				s.getCenter().clone().x - s.getRadius(),
+				s.getCenter().clone().y - s.getRadius(),
+				s.getCenter().clone().z - s.getRadius()
+		);
+		s.maxBound = new Vector3d(
+				s.getCenter().clone().x + s.getRadius(),
+				s.getCenter().clone().y + s.getRadius(),
+				s.getCenter().clone().z + s.getRadius()
+		);
 	}
 	
 	/**
@@ -36,9 +79,6 @@ public class BboxUtils {
 				Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 		c.maxBound = new Vector3d(Double.NEGATIVE_INFINITY,
 				Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-		
-		
-		
 		
 		Vector3d[] v = new Vector3d[8];
 		int count = 0;

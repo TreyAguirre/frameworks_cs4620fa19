@@ -20,11 +20,30 @@ import egl.math.Vector3;
  *
  * @author ags, ss932
  */
-public abstract class Surface {
+public abstract class Surface implements Comparable<Surface> {
 	/** The average position of the surface. Usually calculated by taking the average of 
 	 * all the vertices. This point will be used in AABB tree construction. */
 	public Vector3d averagePosition;
-	
+
+	int widestDim;
+	public void setWidestDim(int widestDim) { this.widestDim = widestDim; }
+
+	@Override
+	public int compareTo(Surface s) {
+		switch (widestDim) {
+			case 0:
+				return (int)(this.maxBound.x - s.getMaxBound().x);
+			case 1:
+				return (int)(this.maxBound.y - s.getMaxBound().y);
+			case 2:
+				return (int)(this.maxBound.z - s.getMaxBound().z);
+		}
+
+		// should never happen
+		System.out.println("If this happens, then you failed to pass in the correct widestDim");
+		return 0;
+	}
+
 	/** The smaller coordinate (x, y, z) of the bounding box of this surface */
 	public Vector3d minBound;
 	
@@ -69,5 +88,5 @@ public abstract class Surface {
 	 * averagePosition, minBound, and maxBound.
 	 */
 	public abstract void computeBoundingBox();
-
+	
 }
