@@ -32,11 +32,17 @@ public abstract class Surface implements Comparable<Surface> {
 	public int compareTo(Surface s) {
 		switch (widestDim) {
 			case 0:
-				return (int)(this.maxBound.x - s.getMaxBound().x);
+			    if (this.maxBound.x < s.getMaxBound().x) return -1;
+			    else if(this.maxBound.x > s.getMaxBound().x) return 1;
+			    return 0;
 			case 1:
-				return (int)(this.maxBound.y - s.getMaxBound().y);
+                if (this.maxBound.y < s.getMaxBound().y) return -1;
+                else if(this.maxBound.y > s.getMaxBound().y) return 1;
+                return 0;
 			case 2:
-				return (int)(this.maxBound.z - s.getMaxBound().z);
+                if (this.maxBound.z < s.getMaxBound().z) return -1;
+                else if(this.maxBound.z > s.getMaxBound().z) return 1;
+                return 0;
 		}
 
 		// should never happen

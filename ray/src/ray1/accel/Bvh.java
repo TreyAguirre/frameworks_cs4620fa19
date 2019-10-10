@@ -41,7 +41,7 @@ public class Bvh implements AccelStruct {
 	 * found outRecord is unchanged.
 	 *
 	 * @param outRecord the output IntersectionRecord
-	 * @param ray the ray to intersect
+	 * @param rayIn the ray to intersect
 	 * @param anyIntersection if true, will immediately return when found an intersection
 	 * @return true if and intersection is found.
 	 */
@@ -66,15 +66,34 @@ public class Bvh implements AccelStruct {
 
 		// ==== Step 1 ====
 		// Check whether the ray intersect with the current node's bounding box, if not return false
-
+		if (!node.intersects(rayIn)) return false;
 
 		// ==== Step 2 ====
 		// Check if current node is leaf
 		// If current node is leaf, loop over all the surface in this leaf, do surface intersection check, find the first intersection
 		// If current node is not a leaf, call intersectHelper recursively for left and right child of the node,
+		if (node.isLeaf()) {
+			boolean intersectsSomething = false;
+			// Find a surface to intersect with
+			for (int i = node.surfaceIndexStart; i < node.surfaceIndexEnd; i++) {
+				if (surfaces[i].intersect(outRecord, rayIn)) {
+					intersectsSomething = true;
+					// return at the first one you intersect with if anyIntersection
+					if(anyIntersection) {
+						return true;
+					}
+					// otherwise, update the max distance the ray searches, and look for closer surfaecs in this node
+					rayIn.makeOffsetSegment(outRecord.t);
+				}
+			}
 
-		boolean ret = false;
-		return ret;
+			return intersectsSomething;
+		}
+
+		// node is not a leaf is code gets here
+		boolean hitsLeft = intersectHelper(node.child[0], outRecord, rayIn, anyIntersection);
+		boolean hitsRight = intersectHelper(node.child[1], outRecord, rayIn, anyIntersection);
+		return hitsLeft || hitsRight;
 	}
 
 	@Override
