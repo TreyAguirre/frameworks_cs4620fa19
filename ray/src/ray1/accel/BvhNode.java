@@ -86,11 +86,15 @@ public class BvhNode {
 		// TODO#Ray Part 2 Task 3: fill in this function.
 		// You can find this in the slides.
         boolean intersectsX, intersectsY, intersectsZ;
-        intersectsX = intersectsY = intersectsZ  = false;
+        intersectsX = intersectsY = intersectsZ = false;
 
         // if the ray's direction is 0 in a dimension, we can determine intersection by the ray origin in that dimension
+		double tGlobalMin = ray.start;
+		double tGlobalMax = ray.end;
+
         Vector3d tMin = new Vector3d();
         Vector3d tMax = new Vector3d();
+
         if (ray.direction.x == 0) {
             intersectsX = ray.origin.x > minBound.x && ray.origin.x < maxBound.x;
         } else {
@@ -98,6 +102,11 @@ public class BvhNode {
             double secondBound = (ray.direction.x < 0) ? minBound.x : maxBound.x;
             tMin.x = (firstBound - ray.origin.x) / ray.direction.x;
             tMax.x = (secondBound - ray.origin.x) / ray.direction.x;
+
+            intersectsX = tMin.x <= tGlobalMax && tMax.x >= tGlobalMin;
+
+			if (tMin.x > tGlobalMin) tGlobalMin = tMin.x;
+            if (tMax.x < tGlobalMax) tGlobalMax = tMax.x;
         }
         if (ray.direction.y == 0) {
             intersectsY = ray.origin.y > minBound.y && ray.origin.y < maxBound.y;
@@ -106,30 +115,27 @@ public class BvhNode {
             double secondBound = (ray.direction.y < 0) ? minBound.y : maxBound.y;
             tMin.y = (firstBound - ray.origin.y) / ray.direction.y;
             tMax.y = (secondBound - ray.origin.y) / ray.direction.y;
+
+            intersectsY = tMin.y <= tGlobalMax && tMax.x >= tGlobalMin;
+
+            if (tMin.y > tGlobalMin) tGlobalMin = tMin.y;
+            if (tMax.y < tGlobalMax) tGlobalMax = tMax.y;
         }
         if (ray.direction.z == 0) {
             intersectsZ = ray.origin.z > minBound.z && ray.origin.z < maxBound.z;
         } else {
-            double firstBound = (ray.direction.z > 0) ? minBound.z : maxBound.z;
-            double secondBound = (ray.direction.z < 0) ? minBound.z : maxBound.z;
-            tMin.z = (firstBound - ray.origin.z) / ray.direction.z;
-            tMax.z = (secondBound - ray.origin.z) / ray.direction.z;
-        }
+			double firstBound = (ray.direction.z > 0) ? minBound.z : maxBound.z;
+			double secondBound = (ray.direction.z < 0) ? minBound.z : maxBound.z;
+			tMin.z = (firstBound - ray.origin.z) / ray.direction.z;
+			tMax.z = (secondBound - ray.origin.z) / ray.direction.z;
 
-        // if we haven't already evaluated intersection in this dimension, do tMin/tMax check
-        if (ray.direction.x != 0) {
-            intersectsX = tMin.x < tMax.y && tMin.x < tMax.z;
-        }
-        if (ray.direction.y != 0) {
-            intersectsY = tMin.y < tMax.x && tMin.y < tMax.z;
-        }
-        if (ray.direction.z != 0) {
-            intersectsZ = tMin.z < tMax.x && tMin.z < tMax.y;
-        }
+			intersectsZ = tMin.z <= tGlobalMax && tMax.x >= tGlobalMin;
+
+			if (tMin.z > tGlobalMin) tGlobalMin = tMin.z;
+			if (tMax.z < tGlobalMax) tGlobalMax = tMax.z;
+		}
 
 		// the ray intersects this box
 		return intersectsX && intersectsY && intersectsZ;
 	}
-
-
 }

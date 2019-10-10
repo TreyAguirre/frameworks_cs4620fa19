@@ -134,7 +134,8 @@ public class Scene {
 	 * @return true if and intersection is found.
 	 */
 	public boolean getFirstIntersection(IntersectionRecord outRecord, Ray ray) {
-		return intersect(outRecord, ray, false);
+//		return intersect(outRecord, ray, false);
+		return accelStruct.intersect(outRecord, ray, false);
 	}
 	
 	/**
@@ -145,9 +146,9 @@ public class Scene {
 	 * @return true if any intersection is found
 	 */
 	public boolean getAnyIntersection(Ray ray) {
-		return intersect(new IntersectionRecord(), ray, true);	
+//		return intersect(new IntersectionRecord(), ray, true);
 		//TODO#Ray Part 2: uncomment the following line, and comment the previous line out.
-//		return accelStruct.intersect(new IntersectionRecord(), ray, true);
+		return accelStruct.intersect(new IntersectionRecord(), ray, true);
 	}
 	
 	private boolean intersect(IntersectionRecord outRecord, Ray rayIn, boolean anyIntersection) {
@@ -161,19 +162,20 @@ public class Scene {
 		//		    5) Set outRecord to the IntersectionRecord of the first object hit.
 		//		    6) If there was an intersection, return true; otherwise return false.
 		boolean hasIntersection = false;
-		
+
 		for (Surface surface : surfaces) {
 			IntersectionRecord record = new IntersectionRecord();
-			
+
 			boolean didIntersect = surface.intersect(record, rayIn);
 			if (didIntersect) {
 				if (anyIntersection) return true;
-				
+
 				outRecord.set(record);
 				rayIn.makeOffsetSegment(record.t);
 				hasIntersection = true;
-			} 
+			}
 		}
+
 		return hasIntersection;
 	}
 }

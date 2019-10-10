@@ -122,7 +122,7 @@
         </CLASSES>
         <JAVADOC />
         <NATIVE>
-          <root url="file://a2/deps/native/macosx" />
+          <root url="file://$MODULE_DIR$/deps/native/windows" />
         </NATIVE>
         <SOURCES />
       </library>
