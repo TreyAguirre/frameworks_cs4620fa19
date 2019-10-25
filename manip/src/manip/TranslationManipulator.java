@@ -34,7 +34,7 @@ public class TranslationManipulator extends Manipulator {
 		//   corner of the screen, and (1, 1) is the top right corner of the screen.
 
 		// A3 SOLUTION START
-
+		
 		// A3 SOLUTION END
 	}
 
