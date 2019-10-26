@@ -36,9 +36,40 @@ public class ScaleManipulator extends Manipulator {
 		//   corner of the screen, and (1, 1) is the top right corner of the screen.
 
 		// A3 SOLUTION BEGIN
+		Vector3 axisOrigin = new Vector3(reference.translation.get(0, 3), reference.translation.get(1, 3), reference.translation.get(2, 3));
+		// get this axis' direction and then rotate it by the reference's current rotation
+		Vector4 axisDir = new Vector4();
+		switch(axis) {
+		case X:
+			axisDir.set(1, 0, 0, 1);
+			break;
+		case Y:
+			axisDir.set(0, 1, 0, 1);
+			break;
+		case Z:
+			axisDir.set(0, 0, 1, 1);
+			break;
+		}
+		reference.rotationX.mul(axisDir);
+		reference.rotationY.mul(axisDir);
+		reference.rotationZ.mul(axisDir);
+		Vector3 rotatedAxisDir = new Vector3(axisDir.x, axisDir.y, axisDir.z);
 		
-		// Find where mouse is in view plane window
+		float t1 = getAxisT(axisOrigin, rotatedAxisDir, viewProjection, lastMousePos);
+		float t2 = getAxisT(axisOrigin, rotatedAxisDir, viewProjection, curMousePos);
 		
+		Vector3 scale = new Vector3(
+			reference.scale.get(0, 0),
+			reference.scale.get(1, 1),
+			reference.scale.get(2, 2)
+		);
+		Vector3 amountToScale = rotatedAxisDir.clone().mul((t2-t1) * (t2/t1));
+		
+		System.out.println("Scale Amount: " + amountToScale);
+		
+		reference.scale.set(0, 0, scale.x + amountToScale.x);
+		reference.scale.set(1, 1, scale.y + amountToScale.y);
+		reference.scale.set(2, 2, scale.z + amountToScale.z);
 		
 		// A3 SOLUTION END
 	}

@@ -34,9 +34,6 @@ public class TranslationManipulator extends Manipulator {
 		//   corner of the screen, and (1, 1) is the top right corner of the screen.
 
 		// A3 SOLUTION START
-		float diffX = curMousePos.x - lastMousePos.x;
-		float diffY = curMousePos.y - lastMousePos.y;
-		
 		Vector3 axisOrigin = new Vector3(reference.translation.get(0, 3), reference.translation.get(1, 3), reference.translation.get(2, 3));
 		// get this axis' direction and then rotate it by the reference's current rotation
 		Vector4 axisDir = new Vector4();
@@ -65,8 +62,6 @@ public class TranslationManipulator extends Manipulator {
 				reference.translation.get(2, 3)
 		);
 		Vector3 translationAmount = rotatedAxisDir.clone().mul(t2-t1);
-		
-		System.out.println("Translation Amount: " + (t2-t1));
 		
 		reference.translation.set(0, 3, translation.x + translationAmount.x);
 		reference.translation.set(1, 3, translation.y + translationAmount.y);
