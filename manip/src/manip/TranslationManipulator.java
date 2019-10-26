@@ -37,20 +37,40 @@ public class TranslationManipulator extends Manipulator {
 		float diffX = curMousePos.x - lastMousePos.x;
 		float diffY = curMousePos.y - lastMousePos.y;
 		
+		Vector3 axisOrigin = new Vector3(reference.translation.get(0, 3), reference.translation.get(1, 3), reference.translation.get(2, 3));
+		// get this axis' direction and then rotate it by the reference's current rotation
+		Vector4 axisDir = new Vector4();
 		switch(axis) {
-			case X:
-				reference.translation.set(0, 3, reference.translation.get(0,  3) + diffX);
-				break;
-			case Y:
-				reference.translation.set(1, 3, reference.translation.get(1,  3) + diffY);
-				break;
-			case Z:
-				reference.translation.set(1, 3, reference.translation.get(1,  3) + diffX);
-				break;
+		case X:
+			axisDir.set(1, 0, 0, 1);
+			break;
+		case Y:
+			axisDir.set(0, 1, 0, 1);
+			break;
+		case Z:
+			axisDir.set(0, 0, 1, 1);
+			break;
 		}
+		reference.rotationX.mul(axisDir);
+		reference.rotationY.mul(axisDir);
+		reference.rotationZ.mul(axisDir);
+		Vector3 rotatedAxisDir = new Vector3(axisDir.x, axisDir.y, axisDir.z);
 		
+		float t1 = getAxisT(axisOrigin, rotatedAxisDir, viewProjection, lastMousePos);
+		float t2 = getAxisT(axisOrigin, rotatedAxisDir, viewProjection, curMousePos);
 		
-		System.out.println("IM HAPPENING");
+		Vector3 translation = new Vector3(
+				reference.translation.get(0, 3),
+				reference.translation.get(1, 3),
+				reference.translation.get(2, 3)
+		);
+		Vector3 translationAmount = rotatedAxisDir.clone().mul(t2-t1);
+		
+		System.out.println("Translation Amount: " + (t2-t1));
+		
+		reference.translation.set(0, 3, translation.x + translationAmount.x);
+		reference.translation.set(1, 3, translation.y + translationAmount.y);
+		reference.translation.set(2, 3, translation.z + translationAmount.z);
 		
 		// A3 SOLUTION END
 	}
