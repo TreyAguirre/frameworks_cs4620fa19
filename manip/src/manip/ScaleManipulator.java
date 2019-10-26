@@ -36,7 +36,10 @@ public class ScaleManipulator extends Manipulator {
 		//   corner of the screen, and (1, 1) is the top right corner of the screen.
 
 		// A3 SOLUTION BEGIN
-
+		
+		// Find where mouse is in view plane window
+		
+		
 		// A3 SOLUTION END
 	}
 

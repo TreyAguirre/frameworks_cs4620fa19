@@ -34,6 +34,23 @@ public class TranslationManipulator extends Manipulator {
 		//   corner of the screen, and (1, 1) is the top right corner of the screen.
 
 		// A3 SOLUTION START
+		float diffX = curMousePos.x - lastMousePos.x;
+		float diffY = curMousePos.y - lastMousePos.y;
+		
+		switch(axis) {
+			case X:
+				reference.translation.set(0, 3, reference.translation.get(0,  3) + diffX);
+				break;
+			case Y:
+				reference.translation.set(1, 3, reference.translation.get(1,  3) + diffY);
+				break;
+			case Z:
+				reference.translation.set(1, 3, reference.translation.get(1,  3) + diffX);
+				break;
+		}
+		
+		
+		System.out.println("IM HAPPENING");
 		
 		// A3 SOLUTION END
 	}

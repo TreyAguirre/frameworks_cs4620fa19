@@ -156,6 +156,7 @@ public class Main {
 				lastMousePos.mul(2.0f).sub(1.0f);
 				curMousePos.mul(2.0f).sub(1.0f);
 				underCursor.applyTransformation(lastMousePos, curMousePos, camController.getCamera().getViewProjectionMatrix());
+				
 				return true;
 			}
 		});
